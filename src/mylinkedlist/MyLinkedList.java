@@ -51,6 +51,7 @@ public class MyLinkedList {
         return count;
     }
     public void display(){
+        System.out.println();
         Node temp = head;
         for(int i=0;i<length();i++){
             System.out.print(temp.getData());
@@ -61,36 +62,133 @@ public class MyLinkedList {
         }
     }
     public void deleteFirst() {
-		if (head != null) {
-            head = head.next;
+		if (head == null) {
+            return;
+        }
+        head=head.next;
+    }
+    public void deleteLast(){
+        if(head==null){
+            return;
+        }
+        if(head.next == null){
+            deleteFirst();
+            return;
+        }
+        Node temp = head;
+        Node previous =null;
+        while(temp.next != null){
+            previous = temp;
+            temp = temp.next;
+        }
+        previous.next = null;
+    }
+
+    public void delete(int index){
+        if(index ==0){
+            deleteFirst();
+            return;
+        }else if(index == length()-1){
+            deleteLast();
+            return;
+        }else{
+            Node preNodeDelete = head;
+            for(int i=1;i<index;i++){
+                preNodeDelete = preNodeDelete.next;
+            }
+            preNodeDelete.next = preNodeDelete.next.next;
         }
     }
-    // BTVN: Viet code cho cac ham sau
-    // 1. public int length()
-    // 2. public void display()
-    // 3. public void deleteFirst()
 
-
-
+    public boolean search(int data){
+        if(head ==null){
+            return false;
+        }
+        Node temp =head;
+        while(temp != null){
+            if(temp.getData() == data)
+                return true;
+        }
+        return false;
+    }
+    public Node searchAtPosition(int index){
+        if(index <0 || index >length()){
+            return null;
+        }
+        Node temp = head;
+        for(int i=0;i<=index;i++){
+            temp=temp.next;
+        }
+        return temp;
+    }
+    public void deleteCount(int index){
+        if(index ==0){
+            deleteFirst();
+            return;
+        }else if(index == length()-1){
+            deleteLast();
+            return;
+        }else{
+            Node preNodeDelete = head;
+            int count=0;
+            while(count < index -1 ){
+                preNodeDelete = preNodeDelete.next;
+                count++;
+            }
+            preNodeDelete.next = preNodeDelete.next.next;
+        }
+    }
+    public void sort() {
+        if (head == null) {
+            return;
+        }
+    boolean flag;
+        do {
+            Node temp = head;
+            flag =false;
+            while (temp.next != null) {
+                if (temp.getData() > temp.next.getData()) {
+                    int n =temp.getData();
+                    temp.setData(temp.next.getData());
+                    temp.next.setData(n);
+                    flag= true; 
+                }
+                temp = temp.next;
+            }
+        } while (flag); 
+    }
+    
     public static void main(String[] args) {
         MyLinkedList linkedList = new MyLinkedList();
         linkedList.addFirst(1);
-        linkedList.addFirst(2);
+        linkedList.addFirst(10);
         linkedList.addFirst(3);
+        //3-10-1
         linkedList.display();
         System.out.println();
         System.out.println("do dai la: "+linkedList.length());
-        System.out.println("xoa phan tu dau va them vao index 1 la 9");
+        System.out.print("xoa phan tu dau");
         linkedList.deleteFirst();
-        linkedList.add(9, 1);
         linkedList.display();
         System.out.println();
-        System.out.println("them 3 phan tu vao duoi");
+        System.out.print("them 3 phan tu vao duoi");
         linkedList.addLast(4);
         linkedList.addLast(5);
         linkedList.addLast(6);
+        //10-1-4-5-6
         linkedList.display();
         System.out.println();
-        System.out.println("do dai la: "+linkedList.length());
+        System.out.print("do dai la: "+linkedList.length());
+        System.out.println();
+        System.out.print("xoa phan tu o index = 3");
+        linkedList.deleteCount(3);
+        //10-1-4-6
+        linkedList.display();
+        System.out.println();
+        System.out.print("sau khi sap xep");
+        linkedList.sort();
+        //1-4-6-10
+        linkedList.display();
+
     }
 }
